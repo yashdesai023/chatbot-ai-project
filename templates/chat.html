@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPSC AI Assistant</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-header">
+        <h1>UPSC AI Assistant</h1>
+        <p>Your dedicated partner for Civil Services Exam preparation.</p>
+    </div>
+    <div class="chat-box" id="chatbox">
+        <div class="chat-message bot-message">
+            <div class="message-content">
+                Hi there! How can I assist you with your UPSC preparation today?
+            </div>
+        </div>
+    </div>
+    <div class="chat-input">
+        <input type="text" id="textInput" placeholder="Ask a question about your documents..." autocomplete="off">
+        <button id="sendBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+        </button>
+    </div>
+</div>
+
+<script>
+    const textInput = document.getElementById('textInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const chatbox = document.getElementById('chatbox');
+
+    const sendMessage = () => {
+        const message = textInput.value.trim();
+        if (message === "") return;
+
+        appendMessage('user', message);
+        textInput.value = "";
+        showTypingIndicator();
+
+        fetch('/get', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'msg=' + encodeURIComponent(message)
+        })
+        .then(response => response.text())
+        .then(data => {
+            removeTypingIndicator();
+            appendMessage('bot', data);
+        })
+        .catch(error => {
+            removeTypingIndicator();
+            appendMessage('bot', 'Sorry, an error occurred. Please check the server and try again.');
+            console.error('Error:', error);
+        });
+    };
+
+    const appendMessage = (sender, message) => {
+        const messageWrapper = document.createElement('div');
+        messageWrapper.classList.add('chat-message', `${sender}-message`);
+        
+        const messageContent = document.createElement('div');
+        messageContent.classList.add('message-content');
+        messageContent.textContent = message;
+        
+        messageWrapper.appendChild(messageContent);
+        chatbox.appendChild(messageWrapper);
+        chatbox.scrollTop = chatbox.scrollHeight;
+    };
+
+    const showTypingIndicator = () => {
+        const indicator = document.createElement('div');
+        indicator.id = 'typing-indicator';
+        indicator.classList.add('chat-message', 'bot-message');
+        indicator.innerHTML = `<div class="message-content typing-indicator"><span></span><span></span><span></span></div>`;
+        chatbox.appendChild(indicator);
+        chatbox.scrollTop = chatbox.scrollHeight;
+    };
+
+    const removeTypingIndicator = () => {
+        const indicator = document.getElementById('typing-indicator');
+        if (indicator) {
+            indicator.remove();
+        }
+    };
+
+    sendBtn.addEventListener('click', sendMessage);
+    textInput.addEventListener("keyup", (event) => {
+        if (event.key === "Enter") {
+            sendMessage();
+        }
+    });
+</script>
+
+</body>
+</html>
+

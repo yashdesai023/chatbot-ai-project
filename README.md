@@ -159,13 +159,15 @@ With a strong foundation in Java backend engineering and a growing expertise in 
 
 I thrive on designing solutions that are scalable, impactful, and deployment-ready—bridging backend reliability with AI innovation to deliver real-world value for businesses and communities.
 
-<p align="left">
+<p align="center">
   <a href="https://www.linkedin.com/in/your-linkedin-profile" target="_blank">
     <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/>
   </a>
   <a href="https://github.com/your-github-username" target="_blank">
     <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/>
   </a>
+  <a href="desaisyash1000@gmail.com">
+    <img src="https://img.shields.io/badge/Gmail-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Gmail"/>
 </p>
 
 
